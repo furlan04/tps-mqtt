@@ -68,7 +68,6 @@ def dir_loop():
     subscriber_direzione.loop_forever()
 
 dir_loop_t = threading.Thread(target=dir_loop)
-print(dir_loop_t.name)
 dir_loop_t.setDaemon(True)
 
 subscriber_velocità = client.Client()
@@ -81,7 +80,6 @@ def vel_loop():
     subscriber_velocità.loop_forever()
 
 vel_loop_t = threading.Thread(target=vel_loop)
-print(vel_loop_t.name)
 vel_loop_t.setDaemon(True)
 
 dir_loop_t.start()
