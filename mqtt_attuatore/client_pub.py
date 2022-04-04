@@ -15,11 +15,10 @@ def base():
 
 @app.route("/attuatore")
 def attuatore():
-    if request.args == []:
-        velocità = request.args["velocità"]
-        direzione = request.args["direzione"]
-        publish.single(TOPIC_VELOCITA, velocità, hostname = BROKER)
-        publish.single(TOPIC_DIREZIONE, direzione, hostname = BROKER)
+    velocità = request.args["velocità"]
+    direzione = request.args["direzione"]
+    publish.single(TOPIC_VELOCITA, velocità, hostname = BROKER)
+    publish.single(TOPIC_DIREZIONE, direzione, hostname = BROKER)
     return redirect("/")
 
 app.run()
