@@ -11,7 +11,7 @@ print(f"[BROKER] {BROKER}")
 
 @app.route("/")
 def base():
-    return redirect(url_for("attuatore"))
+    return render_template("attuatore.html")
 
 @app.route("/attuatore")
 def attuatore():
@@ -20,6 +20,6 @@ def attuatore():
         direzione = request.args["direzione"]
         publish.single(TOPIC_VELOCITA, velocità, hostname = BROKER)
         publish.single(TOPIC_DIREZIONE, direzione, hostname = BROKER)
-    return render_template("attuatore.html")
+    return redirect("/")
 
 app.run()
