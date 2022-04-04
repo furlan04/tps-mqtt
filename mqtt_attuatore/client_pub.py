@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, request, url_for
 import paho.mqtt.publish as publish
+import json
 import sys
 
 app = Flask(__name__)
@@ -15,10 +16,12 @@ def base():
 
 @app.route("/attuatore")
 def attuatore():
-    velocità = request.args["velocità"]
-    direzione = request.args["direzione"]
-    publish.single(TOPIC_VELOCITA, velocità, hostname = BROKER)
-    publish.single(TOPIC_DIREZIONE, direzione, hostname = BROKER)
+    velocità = { "velocità": request.args["velocità"] }
+    direzione = { "direzione": request.args["direzione"] }
+    print(f"[{TOPIC_VELOCITA}] {velocità}")
+    print(f"[{TOPIC_DIREZIONE}] {direzione}")
+    publish.single(TOPIC_VELOCITA, json.dumps(velocità), hostname = BROKER)
+    publish.single(TOPIC_DIREZIONE, json.dumps(direzione), hostname = BROKER)
     return redirect("/")
 
 app.run()

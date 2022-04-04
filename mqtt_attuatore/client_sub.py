@@ -1,6 +1,7 @@
 import paho.mqtt.client as client
 import struct
 import pigpio
+import json
 from nrf24 import *
 import threading
 import sys
@@ -42,7 +43,7 @@ def on_message_direzione(subscriber, userdata, msg):
     dato = msg.payload.decode()
     print(f"{msg.topic}: {dato}")
     global d
-    d = dato
+    d = json.load(dato)["direzione"]
     global nuova_direzione
     nuova_direzione = True
 
@@ -54,7 +55,7 @@ def on_message_velocità(subscriber, userdata, msg):
     dato = msg.payload.decode()
     print(f"{msg.topic}: {dato}")
     global v
-    v = dato
+    v = json.load(dato)["velocità"]
     global nuova_velocità
     nuova_velocità = True
 

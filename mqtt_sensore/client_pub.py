@@ -3,6 +3,7 @@ import struct
 from nrf24 import *
 import sys
 import pigpio
+import json
 
 TOPIC = "tps/dati_sensore"
 BROKER = sys.argv[1:][0]
@@ -31,4 +32,4 @@ while True:
     if nrf.data_ready():
         (id, mittente, destinatario, type, valore, vuoto)= (struct.unpack("2s 4s 4s 2s 4s 16s", nrf.get_payload()))
         if id.decode() == ID and type.decode() == TYPE and destinatario.decode() == ADDR:
-            publish.single(TOPIC, str({"valore-sensore": valore.decode()}), hostname=BROKER)
+            publish.single(TOPIC, json.dump({"valore-sensore": valore.decode()}), hostname=BROKER)
