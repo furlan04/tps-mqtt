@@ -33,7 +33,7 @@ if not pi.connected:
 nrf = NRF24(pi, ce=17, payload_size=32, channel=76, data_rate=RF24_DATA_RATE.RATE_1MBPS, pa_level=RF24_PA.LOW)
 
 nrf.set_address_bytes(5)
-nrf.open_reading_pipe(RF24_RX_ADDR.P1, READINGPIPE)
+nrf.open_writing_pipe(READINGPIPE)
 
 def on_connect_direzione(subscriber, userdata, flags, rc):
     print(f"Connesso con return code {str(rc)} al topic direzione")
@@ -43,7 +43,7 @@ def on_message_direzione(subscriber, userdata, msg):
     dato = msg.payload.decode()
     print(f"{msg.topic}: {dato}")
     global d
-    d = json.load(dato)["direzione"]
+    d = json.loads(dato)["direzione"]
     global nuova_direzione
     nuova_direzione = True
 
@@ -55,7 +55,7 @@ def on_message_velocità(subscriber, userdata, msg):
     dato = msg.payload.decode()
     print(f"{msg.topic}: {dato}")
     global v
-    v = json.load(dato)["velocità"]
+    v = json.loads(dato)["velocita"]
     global nuova_velocità
     nuova_velocità = True
 
@@ -89,7 +89,7 @@ vel_loop_t.start()
 while True:
     if nuova_direzione and nuova_velocità:
         venc = str(v).zfill(3).encode()
-        dir = b"d" if d == "destra" else b"s"
+        dir = b"a" if d == "destra" else b"i"
         packet = struct.pack("2s 4s 4s 2s 1s 3s 16s", ID,
             MITTENTE, DESTINATARIO, TIPO, dir, venc, VUOTO)
         nrf.send(packet)

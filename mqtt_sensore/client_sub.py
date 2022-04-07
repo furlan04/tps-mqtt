@@ -12,7 +12,7 @@ def on_connect(subscriber, userdata, flags, rc):
 
 def on_message(subscriber, userdata, msg):
     dato = msg.payload.decode()
-    val = json.load(dato)["valore-sensore"]
+    val = json.loads(dato)["valore-sensore"]
     print(f"{msg.topic}: {val}")
 
 subscriber = client.Client()

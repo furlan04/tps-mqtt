@@ -16,7 +16,7 @@ def base():
 
 @app.route("/attuatore")
 def attuatore():
-    velocità = { "velocità": request.args["velocità"] }
+    velocità = { "velocita": request.args["velocità"] }
     direzione = { "direzione": request.args["direzione"] }
     print(f"[{TOPIC_VELOCITA}] {velocità}")
     print(f"[{TOPIC_DIREZIONE}] {direzione}")
